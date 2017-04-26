@@ -7,7 +7,8 @@
     "require": {
         "php": ">=7.0",
         "laravel/framework": "5.3.*",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "~2.1.0",
+        "laravelcollective/html":"^5.3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -18,7 +19,10 @@
     },
     "autoload": {
         "classmap": [
-            "database"
+            "app/Models/Entities",
+            "app/Models/Repositories",
+            "app/Models/Services",
+            "app/Models/DataTransfers"
         ],
         "psr-4": {
             "App\\": "app/"
