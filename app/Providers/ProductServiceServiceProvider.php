@@ -27,7 +27,7 @@ class ProductServiceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('ProductServiceInterface', function($app) {
+        $this->app->bind('ProductServiceInterface', function($app) {
             return new ProductService(
                 App::make('ProductRepositoryInterface')
             );

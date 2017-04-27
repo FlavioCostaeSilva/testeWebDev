@@ -27,9 +27,8 @@ class ProductRepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ProductRepositoryInterface', function ($app) {
-            return new ProductRepository(new Product());
-        });
+        $this->app->bind('ProductRepositoryInterface',
+            'App\\Models\\Repositories\\ProductRepository');
     }
 
     public function provides()

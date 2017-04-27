@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('category', 255);
             $table->tinyInteger('free_shipping');
             $table->text('description');
-            $table->double('price', 10, 2); //Preferiria gravar em integer ;)
+            $table->double('price', 10, 2);
         });
     }
 

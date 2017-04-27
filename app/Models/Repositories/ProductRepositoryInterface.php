@@ -11,9 +11,7 @@ namespace App\Models\Repositories;
 
 interface ProductRepositoryInterface
 {
-    public function getProducts();
+    public function getProductByLm($lm);
 
-    public function insertProducts($data);
-
-    public function updateProduct($lm, $data);
+    public function updateOrCreateProduct($data);
 }

@@ -13,5 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ProductServiceInterface
 {
-    public function storageAndPreProcessFileUploaded(UploadedFile $file);
+    public function storageFileUploaded(UploadedFile $file);
+
+    public function processFileWithProducts($filename);
 }

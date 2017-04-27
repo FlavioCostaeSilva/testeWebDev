@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessFileXSLX;
 use App\Models\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -30,7 +31,10 @@ class IndexController extends Controller
             /** @var ProductService $productService */
             $productService = App::make('ProductServiceInterface');
 
-            $productService->storageAndPreProcessFileUploaded($file);
+            $filename = $productService->storageFileUploaded($file);
+
+            //$productService->processFileWithProducts($filename);
+            $this->dispatch(new ProcessFileXSLX($filename));
         } else {
 
         }
