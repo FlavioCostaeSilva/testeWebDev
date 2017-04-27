@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'indexController@index');
 
 Route::post('/', 'indexController@uploadfile');

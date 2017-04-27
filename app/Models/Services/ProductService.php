@@ -9,6 +9,8 @@
 namespace App\Models\Services;
 
 
+use App\Models\Entities\Product;
+use App\Models\Repositories\ProductRepository;
 use App\Models\Repositories\ProductRepositoryInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,9 +20,9 @@ class ProductService implements ProductServiceInterface
 
     protected $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct()
     {
-        $this->productRepository = $productRepository;
+        $this->productRepository = new ProductRepository(new Product());
     }
 
     /**

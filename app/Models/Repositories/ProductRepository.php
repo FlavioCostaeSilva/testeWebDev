@@ -2,32 +2,23 @@
 
 namespace App\Models\Repositories;
 
-use App\Models\Entities\Product;
-
+use Illuminate\Database\Eloquent\Model;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-
     protected $product;
 
-    public function __construct()
+    public function __construct(Model $product)
     {
-        $this->product = new Product();
+        $this->product = $product;
     }
 
 
-    public function getProductByLm($lm)
+    public function getProducts()
     {
         $product = $this->product;
 
-        $product =
-            $product::where('lm', '=' , $lm)->firstOrFail();
-
-        if ($product) {
-            return true;
-        }
-
-        return false;
+        return $product::all();
     }
 
 
@@ -37,7 +28,13 @@ class ProductRepository implements ProductRepositoryInterface
 
         return $product::updateOrCreate(
             ['lm' => $data['lm']],
-            $data
+            [
+                'name' => $data['name'],
+                'category' => $data['category'],
+                'free_shipping' => $data['free_shipping'],
+                'description' => $data['description'],
+                'price' => $data['price']
+            ]
         );
     }
 }

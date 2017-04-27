@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\App;
 
 class ProcessFileXSLX implements ShouldQueue
 {
@@ -23,11 +24,9 @@ class ProcessFileXSLX implements ShouldQueue
         $this->filename = $filename;
     }
 
-    /**
-     * @param ProductService $productService
-     */
-    public function handle(ProductService $productService)
+    public function handle()
     {
+        $productService = new ProductService();
         $productService->processFileWithProducts($this->filename);
     }
 }

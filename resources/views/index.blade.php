@@ -14,6 +14,8 @@
         <li>
         {{ Form::open(array('files'=>true)) }}
 
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
         {{ Form::label('file','Arquivo selecionado: ',array('id'=>'','class'=>'')) }}
         {{ Form::file('file','') }}
 
@@ -30,44 +32,42 @@
 
 <hr>
 
-@if(isset($aviso_adicao))
+@if($aviso_adicao === true)
     <h2>Info:</h2>
-    <h3>Adição dos dados feita com sucesso!</h3>
+    <h3>Pedidos enviados a fila com sucesso! Serão adicionados em instantes! <a href=".">Atualizar</a> </h3>
+    <hr>
+@elseif($aviso_adicao == 'error')
+    <h2>Erro:</h2>
+    <h3>Selecione um arquivo .xlsx válido para enviar!</h3>
     <hr>
 @endif
 
 <h2>Registros atualmente presentes:</h2>
 
-{{--@if(!$registros->isEmpty())--}}
-    {{--<table border="1">--}}
-        {{--<tr>--}}
-            {{--<th>ID</th>--}}
-            {{--<th>Purchaser_name</th>--}}
-            {{--<th>Item_description</th>--}}
-            {{--<th>Item_price</th>--}}
-            {{--<th>Purchase_count</th>--}}
-            {{--<th>Merchant_address</th>--}}
-            {{--<th>Merchant_name</th>--}}
-            {{--<th>Ações</th>--}}
-        {{--</tr>--}}
-        {{--@foreach($registros as $registro)--}}
-            {{--<tr>--}}
-                {{--<td>{{$registro->id}}</td>--}}
-                {{--<td>{{$registro->purchaser_name}}</td>--}}
-                {{--<td>{{$registro->item_description}}</td>--}}
-                {{--<td>{{$registro->item_price}}</td>--}}
-                {{--<td>{{$registro->purchase_count}}</td>--}}
-                {{--<td>{{$registro->merchant_address}}</td>--}}
-                {{--<td>{{$registro->merchant_name}}</td>--}}
-                {{--<td>--}}
-                    {{--<a href="edit/{{$registro->id}}" >Editar</a> | <a href="delete/{{$registro->id}}" >Deletar</a>--}}
-                {{--</td>--}}
-            {{--</tr>--}}
-        {{--@endforeach--}}
-    {{--</table>--}}
-{{--@else--}}
-    {{--<p>Nenhum registro</p>--}}
-{{--@endif--}}
+@if(!$registros->isEmpty())
+    <table border="1">
+        <tr>
+            <th>lm</th>
+            <th>name</th>
+            <th>category</th>
+            <th>free_shipping</th>
+            <th>description</th>
+            <th>price</th>
+        </tr>
+        @foreach($registros as $registro)
+            <tr>
+                <td>{{$registro->lm}}</td>
+                <td>{{$registro->name}}</td>
+                <td>{{$registro->category}}</td>
+                <td>{{$registro->free_shipping}}</td>
+                <td>{{$registro->description}}</td>
+                <td>{{$registro->price}}</td>
+            </tr>
+        @endforeach
+    </table>
+@else
+    <p>Nenhum registro</p>
+@endif
 
 </body>
 </html>
