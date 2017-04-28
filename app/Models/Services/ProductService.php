@@ -31,7 +31,7 @@ class ProductService implements ProductServiceInterface
      */
     public function storageFileUploaded(UploadedFile $file)
     {
-        $filename =  md5(uniqid(time())) . '.xlsx';
+        $filename = md5(uniqid(time())) . '.xlsx';
         $file->move(storage_path() . '/xlsx', $filename);
 
         return $filename;
@@ -45,7 +45,11 @@ class ProductService implements ProductServiceInterface
             foreach ($rowsTable as $rowTable) {
                 $this->createOrUpdateProduct($rowTable);
             }
+
+            return true;
         }
+
+        return false;
     }
 
     private function obtainRowsOfFileWithProducts($filename)

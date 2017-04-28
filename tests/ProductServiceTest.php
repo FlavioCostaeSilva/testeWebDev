@@ -1,21 +1,74 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use \Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ProductServiceTest extends PHPUnit_Framework_TestCase
+class ProductServiceTest extends TestCase
 {
+    protected $file;
+    protected $storage;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->file = $this->mock('Illuminate\Contracts\Filesystem');
+        $this->storage = $this->mock('Illuminate\Contracts\Filesystem\Factory');
+    }
+
+    public function mock($class)
+    {
+        $mock = Mockery::mock($class);
+        $this->app->instance($class, $mock);
+
+        return $mock;
+    }
 
     public function testStorageFileUploadedShouldReturnFileName()
     {
-        $file = new UploadedFile(file_get_contents(__DIR__ . '/Fixtures/file.xlsx'), '25aeoemao');
+        $uploadedFile = Mockery::mock(
+            'Illuminate\Http\UploadedFile',
+            [
+                'getClientOriginalName'      => 'file.xlsx',
+                'getClientOriginalExtension' => '.xlsx',
+                'getPath' => '/path/to/file',
+                'isValid' => true,
+                'guessExtension' => 'xlsx',
+                'getRealPath' => null,
+            ]
+        );
 
-        $service = \Mockery::mock(App::make('ProductServiceInterface'))->makePartial();
-        $service->shouldReceive('storageFileUploaded')->andReturn('qo1833jsi10amx.xlsx');
+        $uploadedFile->shouldReceive('move')->andReturn(true);
 
-        $serviceReal = App::make('ProductServiceInterface');
-        $filename = $serviceReal->storageFileUploaded($file);
+        $serviceReal = new \App\Models\Services\ProductService();
+        $filename = $serviceReal->storageFileUploaded($uploadedFile);
 
         $this->assertInternalType('string', $filename);
+    }
+
+    public function testProcessFileWithProductsShouldReturnTrue()
+    {
+        $uploadedFile = Mockery::mock(
+            'Illuminate\Http\UploadedFile',
+            [
+                'getClientOriginalName'      => 'file.xlsx',
+                'getClientOriginalExtension' => '.xlsx',
+                'getPath' => 'path/to/file',
+                'isValid' => true,
+                'guessExtension' => 'xlsx',
+                'getRealPath' => null,
+            ]
+        );
+
+        $uploadedFile->shouldReceive('move')
+            ->with(storage_path() . '/xlsx/')
+        ->andReturn(true);
+
+        Mockery::mock('\Maatwebsite\Excel\Excel')
+            ->shouldReceive('selectSheetsByIndex')
+            ->andReturn(0);
+
+        $serviceReal = new \App\Models\Services\ProductService();
+        $result = $serviceReal->processFileWithProducts('file.xlsx');
+
+        $this->assertTrue($result);
     }
 }
