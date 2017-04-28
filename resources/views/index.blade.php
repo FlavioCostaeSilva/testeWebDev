@@ -16,8 +16,8 @@
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        {{ Form::label('file','Arquivo selecionado: ',array('id'=>'','class'=>'')) }}
-        {{ Form::file('file','') }}
+        {{ Form::label('file','Arquivo selecionado: ', array('id'=>'','class'=>'')) }}
+        {{ Form::file('file') }}
 
         <!-- submit buttons -->
         {{ Form::submit('Enviar') }}
