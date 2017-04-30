@@ -4,7 +4,7 @@
     <title>Controle e upload de arquivos .xlsx</title>
 </head>
 <body>
-<h1 style="text-align: center">Bem vindo a adição e atualização de produtos via upload de arquivo .xlsx</h1>
+<h1 style="text-align: center">Gerenciamento de produtos</h1>
 <hr>
 <h2>Opções:</h2>
 <ul>
@@ -12,38 +12,48 @@
 
     <ul>
         <li>
-        {{ Form::open(array('files'=>true)) }}
+        {{ Form::open(array('files'=>true, 'url' => route('.'))) }}
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         {{ Form::label('file','Arquivo selecionado: ', array('id'=>'','class'=>'')) }}
         {{ Form::file('file') }}
 
-        <!-- submit buttons -->
         {{ Form::submit('Enviar') }}
 
-        <!-- reset buttons -->
-            {{ Form::reset('Limpar') }}
+        {{ Form::reset('Limpar') }}
 
-            {{ Form::close() }}
+        {{ Form::close() }}
         </li>
     </ul>
 </ul>
 
 <hr>
 
-@if($aviso_adicao === true)
+@if($result === true)
     <h2>Info:</h2>
-    <h3>Pedidos enviados a fila com sucesso! Serão adicionados em instantes! <a href=".">Atualizar</a> </h3>
+    <h3 style="color: red">Produtos enviados a fila com sucesso! Serão adicionados em instantes!</h3>
     <hr>
-@elseif($aviso_adicao == 'error')
+@elseif($result == 'error')
     <h2>Erro:</h2>
-    <h3>Selecione um arquivo .xlsx válido para enviar!</h3>
+    <h3 style="color: red">Selecione um arquivo .xlsx válido para enviar!</h3>
+    <hr>
+@elseif($result == 'prod_edited')
+    <h2>Info:</h2>
+    <h3 style="color: red">Produto editado com sucesso!</h3>
+    <hr>
+@elseif($result == 'product_deleted')
+    <h2>Info:</h2>
+    <h3 style="color: red">Produto deletado com sucesso!</h3>
+    <hr>
+@elseif($result == 'deleted_failed')
+    <h2>Info:</h2>
+    <h3 style="color: red">Produto não encontrado pra ser deletado!</h3>
     <hr>
 @endif
 
 <h2>Registros atualmente presentes:</h2>
-
+<h3><a href="{{route('.')}}">Atualizar</a> </h3>
 @if(!$registros->isEmpty())
     <table border="1">
         <tr>
@@ -62,6 +72,10 @@
                 <td>{{$registro->free_shipping}}</td>
                 <td>{{$registro->description}}</td>
                 <td>{{$registro->price}}</td>
+                <td>
+                    <a href="{{ route('.edit', ['lm' => $registro->lm]) }}" >Editar</a> |
+                    <a href="{{ route('.delete', ['lm' => $registro->lm]) }}" >Deletar</a>
+                </td>
             </tr>
         @endforeach
     </table>

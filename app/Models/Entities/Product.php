@@ -13,4 +13,13 @@ class Product extends Model
     protected $fillable = [
         'lm', 'name', 'category', 'free_shipping', 'description', 'price'
     ];
+
+    /**
+     * @param $price
+     * @return string
+     */
+    public function getPriceAttribute($price)
+    {
+        return number_format($price, 2, '.', '');
+    }
 }

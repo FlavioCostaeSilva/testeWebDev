@@ -17,9 +17,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductService implements ProductServiceInterface
 {
-
+    /**
+     * @var ProductRepository
+     */
     protected $productRepository;
 
+    /**
+     * ProductService constructor.
+     */
     public function __construct()
     {
         $this->productRepository = new ProductRepository(new Product());
@@ -37,6 +42,10 @@ class ProductService implements ProductServiceInterface
         return $filename;
     }
 
+    /**
+     * @param $filename
+     * @return bool
+     */
     public function processFileWithProducts($filename)
     {
         $rowsTable = $this->obtainRowsOfFileWithProducts($filename);
@@ -52,6 +61,10 @@ class ProductService implements ProductServiceInterface
         return false;
     }
 
+    /**
+     * @param $filename
+     * @return mixed
+     */
     private function obtainRowsOfFileWithProducts($filename)
     {
         $rows = Excel::selectSheetsByIndex(0)->load(storage_path() . '/xlsx/' . $filename, function ($reader) {
@@ -61,6 +74,9 @@ class ProductService implements ProductServiceInterface
         return $rows;
     }
 
+    /**
+     * @param $product
+     */
     private function createOrUpdateProduct($product)
     {
         $this->productRepository->updateOrCreateProduct($product);
