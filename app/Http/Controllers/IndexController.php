@@ -9,9 +9,14 @@ use App\Models\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
+/**
+ * Class IndexController
+ * @package App\Http\Controllers
+ */
 class IndexController extends Controller
 {
     /**
+     * Gets index page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -19,21 +24,22 @@ class IndexController extends Controller
         /** @var ProductRepository $productRepository */
         $productRepository = App::make('ProductRepositoryInterface');
 
-        $registros = $productRepository->getProducts();
+        $productsData = $productRepository->getProducts();
 
-        return view('index', ['registros' => $registros, 'result' => 'no_show']);
+        return view('index', ['productsData' => $productsData, 'result' => 'no_show']);
     }
 
     /**
+     * Receives .xlsx file
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function uploadfile(Request $request)
+    public function uploadFile(Request $request)
     {
         /** @var ProductRepository $productRepository */
         $productRepository = App::make('ProductRepositoryInterface');
 
-        $registros = $productRepository->getProducts();
+        $productsData = $productRepository->getProducts();
 
         if ($request->hasFile('file'))
         {
@@ -46,27 +52,29 @@ class IndexController extends Controller
 
             $this->dispatch(new ProcessFileXSLX($filename));
 
-            return view('index', ['registros' => $registros, 'result' => true]);
+            return view('index', ['productsData' => $productsData, 'result' => true]);
         } else {
-            return view('index', ['registros' => $registros, 'result' => 'error']);
+            return view('index', ['productsData' => $productsData, 'result' => 'error']);
         }
     }
 
     /**
-     * @param $lm
+     * Shows product edit page
+     * @param int $lm
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($lm)
     {
         /** @var ProductRepository $productRepository */
         $productRepository = App::make('ProductRepositoryInterface');
+        $productData = $productRepository->getProductsByLm($lm);
 
-        $registro = $productRepository->getProductsByLm($lm);
-
-        return view('edit', ['registro' => $registro]);
+        return view('edit', ['productData' => $productData]);
     }
 
     /**
+     * Update product
+     * Updates a single product through form data
      * @param ProductRequest $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -80,13 +88,14 @@ class IndexController extends Controller
         /** @var ProductRepository $productRepository */
         $productRepository = App::make('ProductRepositoryInterface');
 
-        $registros = $productRepository->getProducts();
+        $productsData = $productRepository->getProducts();
 
-        return view('index', ['registros' => $registros, 'result' => 'prod_edited']);
+        return view('index', ['productsData' => $productsData, 'result' => 'prod_edited']);
     }
 
     /**
-     * @param $lm
+     * Excludes a product by lm attribute
+     * @param int $lm
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function delete($lm)
@@ -101,8 +110,8 @@ class IndexController extends Controller
         /** @var ProductRepository $productRepository */
         $productRepository = App::make('ProductRepositoryInterface');
 
-        $registros = $productRepository->getProducts();
+        $productsData = $productRepository->getProducts();
 
-        return view('index', ['registros' => $registros, 'result' => $result]);
+        return view('index', ['productsData' => $productsData, 'result' => $result]);
     }
 }

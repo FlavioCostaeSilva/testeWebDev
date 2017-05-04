@@ -8,25 +8,25 @@
 <hr>
 <h2>Editar produto:</h2>
 
-@if(!empty($registro))
+@if(!empty($productData))
     <div style="width: 400px;">
         {!! Form::open(['url' => route('.update')]) !!}
-            {{ Form::hidden('lm', $registro->lm) }}
+            {{ Form::hidden('lm', $productData->lm) }}
 
             {!! Form::label('name', 'Name:') !!}
-            {!! Form::text('name', $registro->name) !!}
+            {!! Form::text('name', $productData->name) !!}
         <br>
             {!! Form::label('category', 'Category:') !!}
-            {!! Form::text('category', $registro->category)!!}
+            {!! Form::text('category', $productData->category)!!}
         <br>
             {!! Form::label('free_shipping', 'Free Shipping:') !!}
-            {!! Form::text('free_shipping', $registro->free_shipping) !!}
+            {!! Form::text('free_shipping', $productData->free_shipping) !!}
         <br>
             {!! Form::label('description', 'Description:') !!}
-            {!! Form::textarea('description', $registro->description) !!}
+            {!! Form::textarea('description', $productData->description) !!}
         <br>
             {!! Form::label('price', 'Price:') !!}
-            {!! Form::text('price', $registro->price) !!}
+            {!! Form::text('price', $productData->price) !!}
         <br>
         <br>
             {!! Form::submit('Editar produto') !!}

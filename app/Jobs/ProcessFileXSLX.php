@@ -7,12 +7,16 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\App;
 
+/**
+ * Class ProcessFileXSLX
+ * @package App\Jobs
+ */
 class ProcessFileXSLX implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @var $filename string */
     protected $filename;
 
     /**

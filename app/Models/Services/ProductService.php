@@ -1,24 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Flávio Costa e Silva
- * Date: 04/03/2017
- * Time: 20:06
- */
-
 namespace App\Models\Services;
 
 
 use App\Models\Entities\Product;
 use App\Models\Repositories\ProductRepository;
-use App\Models\Repositories\ProductRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class ProductService
+ * @package App\Models\Services
+ */
 class ProductService implements ProductServiceInterface
 {
     /**
-     * @var ProductRepository
+     * @var ProductRepository $productRepository
      */
     protected $productRepository;
 
@@ -31,6 +28,8 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
+     * Name and storage a received file
+     * Give a name and storage the .xlsx file in the /storage/xlsx path
      * @param UploadedFile $file
      * @return string
      */
@@ -43,14 +42,17 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
-     * @param $filename
+     * Process file on queue
+     * Obtains lines of .xslx file, checks presence of products line
+     * and calls createOrUpdateProducts method
+     * @param string $filename
      * @return bool
      */
     public function processFileWithProducts($filename)
     {
         $rowsTable = $this->obtainRowsOfFileWithProducts($filename);
 
-        if (!empty($rowsTable)) {
+        if ($rowsTable) {
             foreach ($rowsTable as $rowTable) {
                 $this->createOrUpdateProduct($rowTable);
             }
@@ -62,20 +64,32 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
-     * @param $filename
+     * Extract data of .xlsx file
+     * Obtain rows with data about the products on the .xlsx file
+     * @param string $filename
      * @return mixed
      */
     private function obtainRowsOfFileWithProducts($filename)
     {
-        $rows = Excel::selectSheetsByIndex(0)->load(storage_path() . '/xlsx/' . $filename, function ($reader) {
+        try {
+            $rows = Excel::selectSheetsByIndex(0)
+                ->load(storage_path() . '/xlsx/' . $filename)
+                ->get()
+                ->toArray();
 
-        })->get()->toArray();
+            return $rows;
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
 
-        return $rows;
+            return false;
+        }
     }
 
     /**
-     * @param $product
+     * Makes creation or updates a product
+     * Calls updateOrCreateProduct method on ProductRepository class,
+     * this method can be used for manipulation before final recording
+     * @param array $product
      */
     private function createOrUpdateProduct($product)
     {

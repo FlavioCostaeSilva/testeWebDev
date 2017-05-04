@@ -4,6 +4,10 @@ namespace App\Models\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class ProductRepository
+ * @package App\Models\Repositories
+ */
 class ProductRepository implements ProductRepositoryInterface
 {
     /**
@@ -21,6 +25,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
+     * Gets all products on database
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getProducts()
@@ -31,7 +36,8 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
-     * @param $lm
+     * Get products by "Lm" attribute
+     * @param int $lm
      * @return mixed
      */
     public function getProductsByLm($lm)
@@ -42,7 +48,9 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
-     * @param $data
+     * Update or create product
+     * Update existing products and creates new ones too
+     * @param array $data
      * @return mixed
      */
     public function updateOrCreateProduct($data)
@@ -62,7 +70,9 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
-     * @param $lm
+     * Delete product
+     * Makes "Hard Delete" of a product in the database
+     * @param int $lm
      * @return bool
      */
     public function delete($lm)

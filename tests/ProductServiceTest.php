@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * Class ProductServiceTest
+ */
 class ProductServiceTest extends TestCase
 {
     protected $file;
@@ -14,6 +16,10 @@ class ProductServiceTest extends TestCase
         $this->storage = $this->mock('Illuminate\Contracts\Filesystem\Factory');
     }
 
+    /**
+     * @param $class
+     * @return \Mockery\MockInterface
+     */
     public function mock($class)
     {
         $mock = Mockery::mock($class);
@@ -62,7 +68,7 @@ class ProductServiceTest extends TestCase
             ->with(storage_path() . '/xlsx/')
         ->andReturn(true);
 
-        Mockery::mock('\Maatwebsite\Excel\Excel')
+        Mockery::mock('ProductRepositoryInterface')
             ->shouldReceive('selectSheetsByIndex')
             ->andReturn(0);
 
@@ -70,5 +76,17 @@ class ProductServiceTest extends TestCase
         $result = $serviceReal->processFileWithProducts('file.xlsx');
 
         $this->assertTrue($result);
+    }
+
+    public function testProcessFileWithProductsShouldReturnFalse()
+    {
+        Mockery::mock('\Maatwebsite\Excel\Excel')
+            ->shouldReceive('selectSheetsByIndex')
+            ->andReturn(0);
+
+        $serviceReal = new \App\Models\Services\ProductService();
+        $result = $serviceReal->processFileWithProducts('fileNotExists.xlsx');
+
+        $this->assertFalse($result);
     }
 }

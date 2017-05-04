@@ -54,7 +54,7 @@
 
 <h2>Registros atualmente presentes:</h2>
 <h3><a href="{{route('.')}}">Atualizar</a> </h3>
-@if(!$registros->isEmpty())
+@if(!$productsData->isEmpty())
     <table border="1">
         <tr>
             <th>lm</th>
@@ -64,17 +64,17 @@
             <th>description</th>
             <th>price</th>
         </tr>
-        @foreach($registros as $registro)
+        @foreach($productsData as $productData)
             <tr>
-                <td>{{$registro->lm}}</td>
-                <td>{{$registro->name}}</td>
-                <td>{{$registro->category}}</td>
-                <td>{{$registro->free_shipping}}</td>
-                <td>{{$registro->description}}</td>
-                <td>{{$registro->price}}</td>
+                <td>{{$productData->lm}}</td>
+                <td>{{$productData->name}}</td>
+                <td>{{$productData->category}}</td>
+                <td>{{$productData->free_shipping}}</td>
+                <td>{{$productData->description}}</td>
+                <td>{{$productData->price}}</td>
                 <td>
-                    <a href="{{ route('.edit', ['lm' => $registro->lm]) }}" >Editar</a> |
-                    <a href="{{ route('.delete', ['lm' => $registro->lm]) }}" >Deletar</a>
+                    <a href="{{ route('.edit', ['lm' => $productData->lm]) }}" >Editar</a> |
+                    <a href="{{ route('.delete', ['lm' => $productData->lm]) }}" >Deletar</a>
                 </td>
             </tr>
         @endforeach
