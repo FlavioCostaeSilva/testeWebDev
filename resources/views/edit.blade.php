@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Controle e upload de arquivos .xlsx</title>
+    <title>Product management</title>
 </head>
 <body>
-<h1>Gerenciamento de produtos</h1>
+<h1>Product management</h1>
 <hr>
-<h2>Editar produto:</h2>
+<h2>Edit product:</h2>
 
 @if(!empty($productData))
     <div style="width: 400px;">
@@ -29,14 +29,14 @@
             {!! Form::text('price', $productData->price) !!}
         <br>
         <br>
-            {!! Form::submit('Editar produto') !!}
+            {!! Form::submit('Edit product') !!}
 
         {!! Form::close() !!}
     </div>
 @endif
 
 @if(count($errors) > 0)
-    <h3>Erros encontrados:</h3>
+    <h3>Errors found:</h3>
     <ul>
     @foreach ($errors->all() as $error)
         <li style="color: red">{{$error}}</li>
@@ -45,7 +45,7 @@
 @endif
 
 <h3>
-    <a href="{{route('.')}}"><<< Voltar</a>
+    <a href="{{route('.')}}"><<< Back</a>
 </h3>
 
 </body>

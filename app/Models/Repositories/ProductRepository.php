@@ -17,6 +17,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     /**
      * ProductRepository constructor.
+     *
      * @param Model $product
      */
     public function __construct(Model $product)
@@ -26,6 +27,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     /**
      * Gets all products on database
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getProducts()
@@ -37,6 +39,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     /**
      * Get products by "Lm" attribute
+     *
      * @param int $lm
      * @return mixed
      */
@@ -50,6 +53,7 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Update or create product
      * Update existing products and creates new ones too
+     *
      * @param array $data
      * @return mixed
      */
@@ -72,6 +76,7 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Delete product
      * Makes "Hard Delete" of a product in the database
+     *
      * @param int $lm
      * @return bool
      */

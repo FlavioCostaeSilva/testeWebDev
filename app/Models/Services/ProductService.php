@@ -30,6 +30,7 @@ class ProductService implements ProductServiceInterface
     /**
      * Name and storage a received file
      * Give a name and storage the .xlsx file in the /storage/xlsx path
+     *
      * @param UploadedFile $file
      * @return string
      */
@@ -45,6 +46,7 @@ class ProductService implements ProductServiceInterface
      * Process file on queue
      * Obtains lines of .xslx file, checks presence of products line
      * and calls createOrUpdateProducts method
+     *
      * @param string $filename
      * @return bool
      */
@@ -66,6 +68,7 @@ class ProductService implements ProductServiceInterface
     /**
      * Extract data of .xlsx file
      * Obtain rows with data about the products on the .xlsx file
+     *
      * @param string $filename
      * @return mixed
      */
@@ -89,6 +92,7 @@ class ProductService implements ProductServiceInterface
      * Makes creation or updates a product
      * Calls updateOrCreateProduct method on ProductRepository class,
      * this method can be used for manipulation before final recording
+     *
      * @param array $product
      */
     private function createOrUpdateProduct($product)

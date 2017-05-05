@@ -1,8 +1,12 @@
 <?php
 
+use \org\bovigo\vfs\vfsStream;
+use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class IndexControllerTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @param $class
      * @return \Mockery\MockInterface
@@ -50,14 +54,39 @@ class IndexControllerTest extends TestCase
         $this->assertViewHas('result', 'no_show');
     }
 
-    public function testUploadFileHasProductDataAndResultWithError()
+    public function testUploadFileHasProductDataAndResultTrue()
     {
         $mockRepository = Mockery::mock('ProductRepository')
             ->shouldReceive('getProducts', 'updateOrCreateProduct');
 
         $this->app->instance('ProductRepository', $mockRepository);
 
-        $response = $this->call('POST', '/', [], [], ['files' => []]);
+        $mockProductService = Mockery::mock('ProductService')
+            ->shouldReceive('storageFileUploaded', 'move')
+        ->andReturn('sjwkaokoqo.xlsx')
+        ->andReturn(true);
+
+        $this->app->instance('ProductService', $mockProductService);
+
+        $fileUploaded = $this->createUploadFile();
+        $fileUploaded->shouldReceive('move')
+            ->andReturn(true);
+
+        $response = $this->call('POST', '/', [], [], ['file' => $fileUploaded]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertViewHas('productsData');
+        $this->assertViewHas('result', true);
+    }
+
+    public function testUploadFileHasProductDataAndResultError()
+    {
+        $mockRepository = Mockery::mock('ProductRepository')
+            ->shouldReceive('getProducts', 'updateOrCreateProduct');
+
+        $this->app->instance('ProductRepository', $mockRepository);
+
+        $response = $this->call('POST', '/');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertViewHas('productsData');
@@ -114,5 +143,27 @@ class IndexControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertViewHas('productsData');
         $this->assertViewHas('result', 'prod_edited');
+    }
+
+    /**
+     * Creates UploadedFile mocked
+     *
+     * @return \Mockery\MockInterface
+     */
+    private function createUploadFile()
+    {
+        $vfs = vfsStream::setup(sys_get_temp_dir(), null, ['testFile.xlsx' => '']);
+
+        return Mockery::mock(
+            'Illuminate\Http\UploadedFile',
+            [
+                'getClientOriginalName'      => 'file.xlsx',
+                'getClientOriginalExtension' => '.xlsx',
+                'getPath' => $vfs->url(),
+                'isValid' => true,
+                'guessExtension' => 'xlsx',
+                'getRealPath' => null,
+            ]
+        );
     }
 }

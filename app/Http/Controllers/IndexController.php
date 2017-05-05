@@ -17,6 +17,7 @@ class IndexController extends Controller
 {
     /**
      * Gets index page
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -31,6 +32,7 @@ class IndexController extends Controller
 
     /**
      * Receives .xlsx file
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -60,6 +62,7 @@ class IndexController extends Controller
 
     /**
      * Shows product edit page
+     *
      * @param int $lm
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -75,6 +78,7 @@ class IndexController extends Controller
     /**
      * Update product
      * Updates a single product through form data
+     *
      * @param ProductRequest $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -95,6 +99,7 @@ class IndexController extends Controller
 
     /**
      * Excludes a product by lm attribute
+     *
      * @param int $lm
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

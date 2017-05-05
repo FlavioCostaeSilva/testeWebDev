@@ -1,25 +1,24 @@
-# TesteWebDev - Flávio Costa e Silva
-## Requisitos
+# TesteWebDev - by Flávio Costa e Silva
+## Requisites
 1. PHP 7.0
 2. Composer
 
-## Instalação
-1. Clone o projeto
-2. Rode o comando composer install dentro da pasta do projeto
+## Setup
+1. Clone the project
+2. Run command "composer install" on project path
 
-## Configurando
-1. Verifique a presença do banco de dados (database.sqlite) em /storage/
-2. Execute o programa através da linha de comando: 
+## Setting up
+1. Check presence of database file (database.sqlite) in path /storage/
+2. Run the application with command line below:
 * php artisan serve
-3. Acesse pelo navegador com o endereço e porta informado pelo comando anterior
-4. Ligue a queue com o comando: 
+3. Access via browser with address and port provided by last command
+4. Turn on queue with command: 
 * php artisan queue:listen database
 
-Agora basta inserir um arquivo .xlsx com 
-os produtos, como no modelo passado!
+Now insert a .xlsx file with products on same model provided!
 
-## Funções
-* Upload de arquivo .XLSX e pós processamento por fila, realizando criação e edição dos produtos.
-* Edição dos produtos inserido atráves do botão Editar.
-* Exclusão de produto pelo botão excluir.
-* DICA: Você também pode editar seus produtos diretamente no arquivo .xlsx, mantendo o campo LM igual, o processamento irá editar o produto exitente para você!
+## Functions
+* Uploads .xslx files and makes post processing by queue, making creation and edition of products.
+* Edits inserted product by clicking on "Edit" button.
+* Excludes inserted product by clicking on "Delete" button.
+* PLUS: You can edit your products direct on .xlsx file, keeping lm attribute equals on actual product recorded.
