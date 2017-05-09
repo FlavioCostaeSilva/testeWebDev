@@ -45,7 +45,7 @@
 @endif
 
 <h3>
-    <a href="{{route('.')}}"><<< Back</a>
+    <a id="back" href="{{route('.')}}"><<< Back</a>
 </h3>
 
 </body>

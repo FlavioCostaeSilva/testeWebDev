@@ -1,11 +1,32 @@
 <?php
 
 use \org\bovigo\vfs\vfsStream;
+use  \Illuminate\Support\Facades\Artisan;
 use \Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class IndexControllerTest extends TestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * Default preparation for each test
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->prepareForTests();
+    }
+
+    /**
+     * Migrates the database and set the mailer to 'pretend'.
+     * This will cause the tests to run quickly.
+     */
+    private function prepareForTests()
+    {
+        Artisan::call('migrate');
+        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder', '--database' => 'sqlite_testing']);
+    }
 
     /**
      * @param $class
@@ -96,7 +117,7 @@ class IndexControllerTest extends TestCase
     public function testDeleteIsSuccessful()
     {
         $uri = 'delete';
-        $parameters = '/1008';
+        $parameters = '/1001';
 
         $mockRepository = Mockery::mock('ProductRepository')
             ->shouldReceive('getProducts', 'delete');
@@ -165,5 +186,14 @@ class IndexControllerTest extends TestCase
                 'getRealPath' => null,
             ]
         );
+    }
+
+    /**
+     * Reset the database
+     */
+    public function tearDown()
+    {
+        Artisan::call('migrate:reset');
+        parent::tearDown();
     }
 }

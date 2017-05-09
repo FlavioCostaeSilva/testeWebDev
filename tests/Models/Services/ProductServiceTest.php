@@ -1,5 +1,7 @@
 <?php
 
+use  \Illuminate\Support\Facades\Artisan;
+
 /**
  * Class ProductServiceTest
  */
@@ -8,12 +10,26 @@ class ProductServiceTest extends TestCase
     protected $file;
     protected $storage;
 
+    /**
+     * Default preparation for each test
+     */
     public function setUp()
     {
         parent::setUp();
 
+        $this->prepareForTests();
         $this->file = $this->mock('Illuminate\Contracts\Filesystem');
         $this->storage = $this->mock('Illuminate\Contracts\Filesystem\Factory');
+    }
+
+    /**
+     * Migrates the database and set the mailer to 'pretend'.
+     * This will cause the tests to run quickly.
+     */
+    private function prepareForTests()
+    {
+        Artisan::call('migrate');
+        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder', '--database' => 'sqlite_testing']);
     }
 
     /**
@@ -88,5 +104,14 @@ class ProductServiceTest extends TestCase
         $result = $serviceReal->processFileWithProducts('fileNotExists.xlsx');
 
         $this->assertFalse($result);
+    }
+
+    /**
+     * Reset the database
+     */
+    public function tearDown()
+    {
+        Artisan::call('migrate:reset');
+        parent::tearDown();
     }
 }
